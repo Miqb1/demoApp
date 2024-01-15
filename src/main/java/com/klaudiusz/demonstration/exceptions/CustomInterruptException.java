@@ -1,0 +1,7 @@
+package com.klaudiusz.demonstration.exceptions;
+
+public class CustomInterruptException extends RuntimeException {
+    CustomInterruptException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
+}

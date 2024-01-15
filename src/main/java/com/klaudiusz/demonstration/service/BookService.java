@@ -20,7 +20,7 @@ public class BookService {
     }
     public List<BookDto> list(){
         final List<Book> books = bookRepository.findAll();
-        BookLOGGER.info("Booklist created");
+        BookLOGGER.info("Book list created");
         return BookMapper.MAPPER.mapListToBookDtoList(books);
     }
 
