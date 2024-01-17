@@ -10,7 +10,7 @@ public class CustomHttpException extends Exception{
         this.status = status;
         }
 
-    HttpStatusCode getStatus() {
+    public HttpStatusCode getStatus() {
         return status;
     }
 }
