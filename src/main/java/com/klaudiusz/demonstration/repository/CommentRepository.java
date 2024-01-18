@@ -34,15 +34,19 @@ public class CommentRepository {
     @Value("${spring.comment.api.url}")
     private String url;
 
-    CommentRepository(final ObjectMapper objectMapper, final HttpClient httpClient) {
+    //  Constructor of CommentRepository class.
+    CommentRepository(final ObjectMapper objectMapper, final HttpClient httpClient, final String url) {
         this.objectMapper = objectMapper;
         this.httpClient = httpClient;
+        this.url = url;
     }
 
+    //  Method for getting all positions.
     public List<Comment> getAllPositions() {
         final HttpRequest request = HttpRequest
                 .newBuilder()
                 .uri(URI.create(url))
+                .header(CONTENT_TYPE, APPLICATION_JSON)
                 .GET()
                 .build();
         CommentLOGGER.warn("Request: {} --- {}", request, request.bodyPublisher());
@@ -57,6 +61,7 @@ public class CommentRepository {
         }
     }
 
+    //  Method for getting one position.
     public Comment getOnePosition(final Long id) {
         final HttpRequest request = HttpRequest
                 .newBuilder()
@@ -73,6 +78,7 @@ public class CommentRepository {
         }
     }
 
+    //  Method for saving position.
     public Comment saveComments(final Comment comment) throws CustomHttpException {
         try {
             final HttpRequest request = HttpRequest
@@ -92,6 +98,7 @@ public class CommentRepository {
         }
     }
 
+    //  Method for deleting one position.
     public void deleteCommentById(final Long id) throws CustomHttpException {
         final HttpRequest request = HttpRequest
                 .newBuilder()
@@ -110,6 +117,7 @@ public class CommentRepository {
         }
     }
 
+    //  Method for deleting all positions.
     public void deleteComments() throws CustomHttpException {
         final HttpRequest request = HttpRequest
                 .newBuilder()
@@ -128,4 +136,3 @@ public class CommentRepository {
         }
     }
 }
-

@@ -18,11 +18,13 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
+    //  Retrieves a list of all users from the database.
     public List<CommentDto> list() {
         final List<Comment> comments = commentRepository.getAllPositions();
         return CommentMapper.MAPPER.mapListToCommentDtoList(comments);
     }
 
+    //  Retrieves a user with a specified identifier.
     public CommentDto getCommentById(final Long id) {
         final Comment comment = commentRepository.getOnePosition(id);
         if (comment != null) {
@@ -31,15 +33,18 @@ public class CommentService {
         return null;
     }
 
+    //  Saves a new user to the database.
     public CommentDto create(final CommentDto commentDto) throws CustomHttpException {
         final Comment comment = commentRepository.saveComments(CommentMapper.MAPPER.mapToComment(commentDto));
         return CommentMapper.MAPPER.mapToCommentDto(comment);
     }
 
+    //  Deletes a specific position.
     public void deleteById(final Long id) throws CustomHttpException {
         commentRepository.deleteCommentById(id);
     }
 
+    //  Deletes all positions.
     public void deleteAll() throws CustomHttpException {
         commentRepository.deleteComments();
     }
