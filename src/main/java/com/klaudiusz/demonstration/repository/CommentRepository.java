@@ -32,7 +32,7 @@ public class CommentRepository {
 
     HttpClient httpClient;
     @Value("${spring.comment.api.url}")
-    private String URL;
+    private String url;
 
     CommentRepository(final ObjectMapper objectMapper, final HttpClient httpClient) {
         this.objectMapper = objectMapper;
@@ -42,13 +42,13 @@ public class CommentRepository {
     public List<Comment> getAllPositions() {
         final HttpRequest request = HttpRequest
                 .newBuilder()
-                .uri(URI.create(URL))
+                .uri(URI.create(url))
                 .GET()
                 .build();
-        CommentLOGGER.warn("Request: {} --- {} ---{}", request.method(), request.uri(), request.bodyPublisher());
+        CommentLOGGER.warn("Request: {} --- {}", request, request.bodyPublisher());
         try {
             final HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            CommentLOGGER.warn("Response: {} --- {} --- {}", request.method(), response.uri(), response.body().length());
+            CommentLOGGER.warn("Response: {} --- {}", request, response.body().length());
             final Comment[] comments = objectMapper.readValue(response.body(), Comment[].class);
             return Arrays.asList(comments);
         } catch (final IOException | InterruptedException e) {
@@ -60,7 +60,7 @@ public class CommentRepository {
     public Comment getOnePosition(final Long id) {
         final HttpRequest request = HttpRequest
                 .newBuilder()
-                .uri(URI.create(URL + "/" + id))
+                .uri(URI.create(url + "/" + id))
                 .header(CONTENT_TYPE, APPLICATION_JSON)
                 .GET()
                 .build();
@@ -77,7 +77,7 @@ public class CommentRepository {
         try {
             final HttpRequest request = HttpRequest
                     .newBuilder()
-                    .uri(URI.create(URL))
+                    .uri(URI.create(url))
                     .header(CONTENT_TYPE, APPLICATION_JSON)
                     .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(comment)))
                     .build();
@@ -95,7 +95,7 @@ public class CommentRepository {
     public void deleteCommentById(final Long id) throws CustomHttpException {
         final HttpRequest request = HttpRequest
                 .newBuilder()
-                .uri(URI.create(URL + "/" + id))
+                .uri(URI.create(url + "/" + id))
                 .header(CONTENT_TYPE, APPLICATION_JSON)
                 .DELETE()
                 .build();
@@ -113,7 +113,7 @@ public class CommentRepository {
     public void deleteComments() throws CustomHttpException {
         final HttpRequest request = HttpRequest
                 .newBuilder()
-                .uri(URI.create(URL))
+                .uri(URI.create(url))
                 .header(CONTENT_TYPE, APPLICATION_JSON)
                 .DELETE()
                 .build();

@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 public class BookController {
 
-    private final static Logger bookLOGGER = LoggerFactory.getLogger(BookController.class);
+    private static final Logger bookLOGGER = LoggerFactory.getLogger(BookController.class);
     BookService bookService;
 
     BookController(final BookService bookService) {

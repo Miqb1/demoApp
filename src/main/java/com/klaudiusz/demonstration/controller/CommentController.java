@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+
 public class CommentController {
 
     CommentService commentService;
@@ -37,7 +38,7 @@ public class CommentController {
     }
 
     @PutMapping(path = "comment/{id}")
-    public ResponseEntity<CommentDto> changeComment(@PathVariable final Long id, @RequestBody final CommentDto commentDto) throws CustomHttpException {
+    public ResponseEntity<CommentDto> changeComment(@PathVariable final Long id, @RequestBody final CommentDto commentDto) {
         try {
             CommentDto previousComment = commentService.getCommentById(id);
             if (commentDto.getBody() != null) {
@@ -60,7 +61,7 @@ public class CommentController {
     }
 
     @DeleteMapping("comment")
-    public ResponseEntity<String> deleteComments() throws CustomHttpException {
+    public ResponseEntity<String> deleteComments(){
         try {
             commentService.deleteAll();
             return ResponseEntity.ok("All comments deleted");
