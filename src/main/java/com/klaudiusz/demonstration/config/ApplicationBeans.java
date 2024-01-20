@@ -9,11 +9,12 @@ import java.net.http.HttpClient;
 @Configuration
 public class ApplicationBeans {
     @Bean
-    ObjectMapper createObjectMapper(){
+    ObjectMapper createObjectMapper() {
         return new ObjectMapper();
     }
+
     @Bean
-    HttpClient client(){
+    HttpClient client() {
         return HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_2)
                 .followRedirects(HttpClient.Redirect.NORMAL)

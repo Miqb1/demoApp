@@ -21,4 +21,3 @@ public class CarDto {
     private String prodYear;
     private String regNumber;
 }
-

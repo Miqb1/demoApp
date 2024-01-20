@@ -48,6 +48,4 @@ public class CommentService {
     public void deleteAll() throws CustomHttpException {
         commentRepository.deleteComments();
     }
-
 }
-

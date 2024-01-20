@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class BookService {
 
-    private final static Logger BookLOGGER = LoggerFactory.getLogger(BookService.class);
+    private static final Logger BookLOGGER = LoggerFactory.getLogger(BookService.class);
     BookRepository bookRepository;
 
     BookService(final BookRepository bookRepository) {
@@ -24,11 +24,9 @@ public class BookService {
         return BookMapper.MAPPER.mapListToBookDtoList(books);
     }
 
-    public BookDto create (final BookDto bookDto){
+    public void create (final BookDto bookDto){
         final Book book = bookRepository.save(BookMapper.MAPPER.mapToBook(bookDto));
         BookLOGGER.info("Book No. {} created", bookDto.getId());
-        return BookMapper.MAPPER.mapToBookDto(book);
+        BookMapper.MAPPER.mapToBookDto(book);
     }
-
-
 }

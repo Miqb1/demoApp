@@ -88,5 +88,4 @@ public class CarController {
         carService.deleteById(id);
         return ResponseEntity.ok("Car with id " + id + " deleted successfully");
     }
-
 }

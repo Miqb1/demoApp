@@ -12,10 +12,7 @@ public interface CarMapper {
 
     CarMapper MAPPER = Mappers.getMapper(CarMapper.class);
 
-
     List<CarDto> mapListToCarDtoList(List<Car> cars);
-
-
 
     Car mapToCar(CarDto carDto);
 
