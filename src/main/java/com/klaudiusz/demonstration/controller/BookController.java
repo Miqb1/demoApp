@@ -19,6 +19,7 @@ public class BookController {
     private static final Logger bookLOGGER = LoggerFactory.getLogger(BookController.class);
     BookService bookService;
 
+    //Method for creating and getting book positions.
     @GetMapping("book")
     ResponseEntity<List<BookDto>> getAllBooks() {
         final BookDto firstBook = new BookDto(1L, "Biblia");

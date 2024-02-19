@@ -18,7 +18,7 @@ public class CommentController {
 
     // Request to retrieve data using the GET function for all positions.
     @GetMapping("comment")
-    public ResponseEntity<List<CommentDto>> getAllComments() throws CustomHttpException {
+    public ResponseEntity<List<CommentDto>> getAllComments() {
         final List<CommentDto> list = commentService.list();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }

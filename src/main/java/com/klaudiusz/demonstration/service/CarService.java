@@ -21,14 +21,15 @@ public class CarService {
 
     private CarRepository carRepository;
 
+    // Retrieves a list of all cars from the database.
     public List<CarDto> list() {
         final List<Car> cars = carRepository.findAll();
         if (cars.isEmpty()) {
-            CarLOGGER.warn("There are any cars to be listed");
+            CarLOGGER.warn("There aren't any cars to be listed");
         }
         return CarMapper.MAPPER.mapListToCarDtoList(cars);
     }
-
+    // Retrieves a specific car defined by its ID.
     public CarDto findCarById(final Long id) {
         final Optional<Car> car = carRepository.findById(id);
         if (car.isEmpty()) {
@@ -38,21 +39,25 @@ public class CarService {
         return CarMapper.MAPPER.mapToCarDto(car.get());
     }
 
+    // Creates a position.
     public CarDto createCar(final CarDto carDto) {
         final Car car = carRepository.save(CarMapper.MAPPER.mapToCar(carDto));
         return CarMapper.MAPPER.mapToCarDto(car);
     }
 
+    // Updates regNumber ang Color of a position.
     @Transactional
     public int updateCar(final Long id, final CarDto carDto) {
         final Car car = CarMapper.MAPPER.mapToCar(carDto);
         return carRepository.updateCar(id, car.getRegNumber(), car.getColor());
     }
 
+    // Deletes a specific car defined by its ID.
     public void deleteById(final Long id) {
         carRepository.deleteById(id);
     }
 
+    // Deletes all cars.
     public void deleteAll() {
         carRepository.deleteAll();
     }

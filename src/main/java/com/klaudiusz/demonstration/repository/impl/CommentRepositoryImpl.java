@@ -25,7 +25,7 @@ import static org.springframework.http.HttpStatus.valueOf;
 @Component
 @SuppressWarnings("unused")
 public class CommentRepositoryImpl implements CommentRepository {
-
+    // Constants of this Repository.
     public static final String CONTENT_TYPE = "Content-Type";
     public static final String APPLICATION_JSON = "application/json";
     public static final String INTERRUPTED_WHILE_PERFORMING_OPERATION = "Task interrupted while performing operation";
@@ -62,7 +62,7 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     //  Method for getting one position.
-    public Comment getOnePosition(final Long id)  throws CustomHttpException {
+    public Comment getOnePosition(final Long id) throws CustomHttpException {
         final HttpRequest request = HttpRequest
                 .newBuilder()
                 .uri(URI.create(url + "/" + id))
@@ -96,6 +96,36 @@ public class CommentRepositoryImpl implements CommentRepository {
                 throw new CustomHttpException("Failed to add comment. Status code: ", valueOf(response.statusCode()));
             }
             return comment;
+        } catch (final IOException | InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new CustomInterruptException(INTERRUPTED_WHILE_PERFORMING_OPERATION, e);
+        }
+    }
+
+    // Method for updating a comment.
+    public Comment updateComment(final Long id, final Comment comment) throws CustomHttpException {
+        try {
+            final Comment existingComment = getOnePosition(id);
+
+            if (comment.getBody() != null) {
+                existingComment.setBody(comment.getBody());
+            }
+            if (comment.getEmail() != null) {
+                existingComment.setEmail(comment.getEmail());
+            }
+            final HttpRequest request = HttpRequest
+                    .newBuilder()
+                    .uri(URI.create(url + "/" + id))
+                    .header(CONTENT_TYPE, APPLICATION_JSON)
+                    .PUT(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(existingComment)))
+                    .build();
+
+            final HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                throw new CustomHttpException("Failed to update comment. Status code: ", valueOf(response.statusCode()));
+            }
+            return existingComment;
         } catch (final IOException | InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new CustomInterruptException(INTERRUPTED_WHILE_PERFORMING_OPERATION, e);

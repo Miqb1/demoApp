@@ -8,16 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CarDto {
+    // DTO for Car model.
     private Long id;
     private String brand;
     private String model;
     private String color;
     private String prodYear;
     private String regNumber;
-
-    public CarDto(final String regNumber, final String color) {
-        this.regNumber = regNumber;
-        this.color = color;
-    }
 
 }

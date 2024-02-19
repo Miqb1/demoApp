@@ -19,6 +19,7 @@ public class CarController {
 
     CarService carService;
 
+    // Retrieves a list of all cars in the system.
     @GetMapping("car")
     public ResponseEntity<List<CarDto>> getAllCars() {
         final List<CarDto> list = carService.list();
@@ -30,6 +31,7 @@ public class CarController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    // Retrieves a car by its ID in the system.
     @GetMapping(path = "car/{id}")
     public ResponseEntity<CarDto> getOneCarById(@PathVariable final Long id) {
         final CarDto car = carService.findCarById(id);
@@ -39,6 +41,7 @@ public class CarController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    // Creates a new car entity with the provided details.
     @PostMapping("addCars")
     public ResponseEntity<CarDto> createCar(@RequestBody final CarDto newCar) {
         try {
@@ -50,6 +53,7 @@ public class CarController {
         }
     }
 
+    // Partially updates the details of a specific car identified by its ID.
     @PatchMapping(path = "car/{id}")
     public ResponseEntity<String> updateCar(
             @PathVariable final Long id,
@@ -64,12 +68,14 @@ public class CarController {
         }
     }
 
+    // Deletes all cars in that DB.
     @DeleteMapping("car/all")
     public ResponseEntity<String> deleteAllCars() {
         carService.deleteAll();
         return ResponseEntity.ok("All cars deleted successfully");
     }
 
+    // Deletes a specific car identified by its ID.
     @DeleteMapping("car/{id}")
     public ResponseEntity<String> deleteCarById(@PathVariable final Long id) {
         carService.deleteById(id);

@@ -12,17 +12,18 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@SuppressWarnings("unused")
 public class CommentService {
 
     private CommentRepository commentRepository;
 
-    //  Retrieves a list of all users from the database.
-    public List<CommentDto> list() throws CustomHttpException {
+    //  Retrieves a list of all comments from the database.
+    public List<CommentDto> list() {
         final List<Comment> comments = commentRepository.getAllPositions();
         return CommentMapper.MAPPER.mapListToCommentDtoList(comments);
     }
 
-    //  Retrieves a user with a specified identifier.
+    //  Retrieves a comment with a specified identifier.
     public CommentDto getCommentById(final Long id) throws CustomHttpException {
         final Comment comment = commentRepository.getOnePosition(id);
         if (comment != null) {
@@ -31,26 +32,19 @@ public class CommentService {
         return null;
     }
 
-    //  Saves a new user to the database.
+    //  Saves a new comment to the database.
     public CommentDto create(final CommentDto commentDto) throws CustomHttpException {
         final Comment comment = commentRepository.saveComments(CommentMapper.MAPPER.mapToComment(commentDto));
         return CommentMapper.MAPPER.mapToCommentDto(comment);
     }
 
+    // Updates eMail and Body of a specific position defined by its ID/
     public boolean updateComment(final Long id, final CommentDto commentDto) throws CustomHttpException {
-        final Comment comment = commentRepository.getOnePosition(id);
-        if (comment != null) {
-            if (commentDto.getBody() != null) {
-                comment.setBody(commentDto.getBody());
-            }
-            if (commentDto.getEmail() != null) {
-                comment.setEmail(commentDto.getEmail());
-            }
-            commentRepository.saveComments(comment);
+        if (id != null) {
+            final Comment comment = commentRepository.updateComment(id, CommentMapper.MAPPER.mapToComment(commentDto));
             return true;
-        } else {
+        } else
             return false;
-        }
     }
 
     //  Deletes a specific position.

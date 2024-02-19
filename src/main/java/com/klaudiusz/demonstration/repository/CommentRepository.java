@@ -12,5 +12,7 @@ public interface CommentRepository {
 
     Comment saveComments(final Comment comment) throws CustomHttpException;
 
+    Comment updateComment(final Long id, final Comment comment) throws CustomHttpException;
+
     void deleteCommentById(final Long id) throws CustomHttpException;
 }

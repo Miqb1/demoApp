@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentDto {
+    // DTO for Comment model.
     private Long id;
     private String postId;
     private String name;

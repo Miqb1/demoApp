@@ -13,17 +13,20 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@SuppressWarnings("unused")
 public class BookService {
 
     private static final Logger BookLOGGER = LoggerFactory.getLogger(BookService.class);
     private BookRepository bookRepository;
 
+    // Retrieves a list of all books.
     public List<BookDto> list() {
         final List<Book> books = bookRepository.findAll();
         BookLOGGER.info("Book list created");
         return BookMapper.MAPPER.mapListToBookDtoList(books);
     }
 
+    //Creates a book position.
     public BookDto create(final BookDto bookDto) {
         final Book book = bookRepository.save(BookMapper.MAPPER.mapToBook(bookDto));
         BookLOGGER.info("Book No. {} created", bookDto.getId());
