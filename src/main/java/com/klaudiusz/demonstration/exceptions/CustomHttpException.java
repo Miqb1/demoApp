@@ -2,15 +2,10 @@ package com.klaudiusz.demonstration.exceptions;
 
 import org.springframework.http.HttpStatusCode;
 
-public class CustomHttpException extends Exception{
-    private final HttpStatusCode status;
+@SuppressWarnings("unused")
+public class CustomHttpException extends Exception {
 
-    public CustomHttpException(String message, HttpStatusCode status) {
+    public CustomHttpException(final String message, final HttpStatusCode status) {
         super(message);
-        this.status = status;
-        }
-
-    public HttpStatusCode getStatus() {
-        return status;
     }
 }

@@ -2,6 +2,7 @@ package com.klaudiusz.demonstration.controller;
 
 import com.klaudiusz.demonstration.dto.CarDto;
 import com.klaudiusz.demonstration.service.CarService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -11,15 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
+@SuppressWarnings("unused")
 public class CarController {
     public static final Logger CarLOGGER = LoggerFactory.getLogger(CarController.class);
 
     CarService carService;
 
-    CarController(final CarService carService) {
-        this.carService = carService;
-    }
-
+    // Retrieves a list of all cars in the system.
     @GetMapping("car")
     public ResponseEntity<List<CarDto>> getAllCars() {
         final List<CarDto> list = carService.list();
@@ -31,6 +31,7 @@ public class CarController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    // Retrieves a car by its ID in the system.
     @GetMapping(path = "car/{id}")
     public ResponseEntity<CarDto> getOneCarById(@PathVariable final Long id) {
         final CarDto car = carService.findCarById(id);
@@ -40,16 +41,11 @@ public class CarController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    // Creates a new car entity with the provided details.
     @PostMapping("addCars")
     public ResponseEntity<CarDto> createCar(@RequestBody final CarDto newCar) {
         try {
-            final CarDto createdCar = carService.createCar(new CarDto(
-                    newCar.getId(),
-                    newCar.getBrand(),
-                    newCar.getModel(),
-                    newCar.getColor(),
-                    newCar.getProdYear(),
-                    newCar.getRegNumber()));
+            final CarDto createdCar = carService.createCar(newCar);
             CarLOGGER.info("Car No {} created", createdCar.getId());
             return new ResponseEntity<>(createdCar, HttpStatus.CREATED);
         } catch (final Exception e) {
@@ -57,36 +53,32 @@ public class CarController {
         }
     }
 
-    @PutMapping(path = "car/{id}")
-    public ResponseEntity<CarDto> updateCar(@PathVariable final Long id, @RequestBody final CarDto updatedCar) {
-        try {
-            if (id == null) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-            final CarDto updatedDetails = carService.updateCar(id, updatedCar);
+    // Partially updates the details of a specific car identified by its ID.
+    @PatchMapping(path = "car/{id}")
+    public ResponseEntity<String> updateCar(
+            @PathVariable final Long id,
+            @RequestBody final CarDto carDto) {
 
-            if (updatedDetails != null) {
-                CarLOGGER.info("Properties of car {} updated", id);
-                return new ResponseEntity<>(updatedDetails, HttpStatus.OK);
-            } else {
+        final int updateCount = carService.updateCar(id, carDto);
 
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        } catch (final Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (updateCount > 0) {
+            return ResponseEntity.ok("Car updated successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Car with ID " + id + " not found");
         }
     }
 
+    // Deletes all cars in that DB.
     @DeleteMapping("car/all")
     public ResponseEntity<String> deleteAllCars() {
         carService.deleteAll();
         return ResponseEntity.ok("All cars deleted successfully");
     }
 
+    // Deletes a specific car identified by its ID.
     @DeleteMapping("car/{id}")
     public ResponseEntity<String> deleteCarById(@PathVariable final Long id) {
         carService.deleteById(id);
         return ResponseEntity.ok("Car with id " + id + " deleted successfully");
     }
-
 }

@@ -16,5 +16,4 @@ public class Book {
     @GeneratedValue
     private Long id;
     private String name;
-
 }

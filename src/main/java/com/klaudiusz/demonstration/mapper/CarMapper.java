@@ -6,17 +6,13 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
-import java.util.Optional;
 
 @Mapper
 public interface CarMapper {
 
     CarMapper MAPPER = Mappers.getMapper(CarMapper.class);
 
-
     List<CarDto> mapListToCarDtoList(List<Car> cars);
-
-    CarDto mapToOptionalCarDto(Optional<Car> car);
 
     Car mapToCar(CarDto carDto);
 

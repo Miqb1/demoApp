@@ -2,6 +2,7 @@ package com.klaudiusz.demonstration.controller;
 
 import com.klaudiusz.demonstration.dto.BookDto;
 import com.klaudiusz.demonstration.service.BookService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -12,15 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 public class BookController {
 
-    private final static Logger bookLOGGER = LoggerFactory.getLogger(BookController.class);
+    private static final Logger bookLOGGER = LoggerFactory.getLogger(BookController.class);
     BookService bookService;
 
-    BookController(final BookService bookService) {
-        this.bookService = bookService;
-    }
-
+    //Method for creating and getting book positions.
     @GetMapping("book")
     ResponseEntity<List<BookDto>> getAllBooks() {
         final BookDto firstBook = new BookDto(1L, "Biblia");
