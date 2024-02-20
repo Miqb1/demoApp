@@ -12,7 +12,7 @@
     </parent>
     <groupId>com.klaudiusz</groupId>
     <artifactId>demonstration</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <name>demonstration</name>
     <description>Demo project of Klaudiusz Weiner</description>
     <properties>

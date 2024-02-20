@@ -52,7 +52,9 @@ public class CommentRepositoryImpl implements CommentRepository {
         CommentLOGGER.warn("Request: {} --- {}", request, request.bodyPublisher());
         try {
             final HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            CommentLOGGER.warn("Response: {} --- {}", request, response.body());
+            if (CommentLOGGER.isWarnEnabled()) {
+                CommentLOGGER.warn("Response: {} --- {}", request, response.body());
+            }
 
             return Arrays.stream(objectMapper.readValue(response.body(), Comment[].class)).toList();
         } catch (final IOException | InterruptedException e) {
