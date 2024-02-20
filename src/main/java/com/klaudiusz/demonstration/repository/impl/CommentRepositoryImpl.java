@@ -52,7 +52,7 @@ public class CommentRepositoryImpl implements CommentRepository {
         CommentLOGGER.warn("Request: {} --- {}", request, request.bodyPublisher());
         try {
             final HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            CommentLOGGER.warn("Response: {} --- {}", request, response.body().length());
+            CommentLOGGER.warn("Response: {} --- {}", request, response.body());
 
             return Arrays.stream(objectMapper.readValue(response.body(), Comment[].class)).toList();
         } catch (final IOException | InterruptedException e) {
@@ -71,11 +71,13 @@ public class CommentRepositoryImpl implements CommentRepository {
                 .build();
         try {
             final HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
             if (response.statusCode() != 200) {
                 throw new CustomHttpException("Failed to get comment. Status code: ", valueOf(response.statusCode()));
             }
-
+            CommentLOGGER.warn("Response: {} ", request);
             return objectMapper.readValue(response.body(), Comment.class);
+
         } catch (final IOException | InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new CustomInterruptException(INTERRUPTED_WHILE_PERFORMING_OPERATION, e);
@@ -95,6 +97,7 @@ public class CommentRepositoryImpl implements CommentRepository {
             if (response.statusCode() != 201) {
                 throw new CustomHttpException("Failed to add comment. Status code: ", valueOf(response.statusCode()));
             }
+            CommentLOGGER.warn("Comment saved");
             return comment;
         } catch (final IOException | InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -125,6 +128,7 @@ public class CommentRepositoryImpl implements CommentRepository {
             if (response.statusCode() != 200) {
                 throw new CustomHttpException("Failed to update comment. Status code: ", valueOf(response.statusCode()));
             }
+            CommentLOGGER.warn("Comment updated");
             return existingComment;
         } catch (final IOException | InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -145,6 +149,7 @@ public class CommentRepositoryImpl implements CommentRepository {
             if (response.statusCode() != 200) {
                 throw new CustomHttpException("Failed to delete comment. Status code: ", valueOf(response.statusCode()));
             }
+            CommentLOGGER.warn("Comment deleted");
         } catch (final IOException | InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new CustomInterruptException(INTERRUPTED_WHILE_PERFORMING_OPERATION, e);
